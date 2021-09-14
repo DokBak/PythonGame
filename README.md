@@ -25,6 +25,17 @@ Python  Game Development
             이미지변수.get_rect().size
         3. 배경의 좌표는 (0,0) 에서 시작하지만 캐릭터는 어디에 위치될지 모른다. 예로 초기위치(좌표)를 아래 중앙에 위치하게 설정은 (가로 :  (배경의 가로 / 2) - (캐릭터의 가로 / 2), 세로 : 배경의 세로길이 - 캐릭터의 세로길이)로 계산한다.
         4. 배경과 동일하게 화면변수에 blit함수로 캐릭터를 그린다.
+    키보드 이벤트 설정(4_keyboard_event.py)
+        1. 게임을 진행할 때 필요한 입력 이벤트를 설정
+        2. 이벤트 타입이 키보드를 누를때(KEYDOWN : 대문자로)
+            event.type == pygame.KEYDOWN
+        3. 이벤트 타입이 키보드에서 손을 뗄때(KEYUP : 대문자로)
+            event.type == pygame.KEYUP
+        4. 어떤 키가 눌렸는지는 아래와 같이 작성(Key이름 : 대문자로)
+            event.key == pygame.K_LEFT
+        5. 이동시 캐릭터의 좌표를 변경해줄 이동좌표를 선언후 이벤트 별로 이동 좌표 값을 조정
+        6. 캐릭터의 좌표를 현재좌표 - 이동좌표로 현재좌표를 갱신한다.
+        7. 화면크기에 맞게 경계값 처리를 한다.
 2021년 9월 14일
     파이썬 게임 개발 환경 설정
         1. pygame패키지를 설치
@@ -41,7 +52,7 @@ Python  Game Development
             pygame.display.set_caption(게임이름)
         5. pygame사용시 설정
             설정에서  linting을 검색하고, python > linting : Bandit Enabled 옵션의 체크를 해제 한다. (처음부터 체크 해제인 경우도 있다.)
-        6. 게임은 무엇인가의 이벤트가 있어야 게임이 꺼지지 않는다.
+        6. 게임은 무엇인가의 이벤트가 있어야 게임이 꺼지지 않는다.(QUIT : 대문자로)
             for event in pygame.event.get()
                 if event.type == pygmae.QUIT:
         7. 게임의 맨 마지막에는 pygame 패키지를 닫아주어야 한다
