@@ -14,10 +14,10 @@ pygame.display.set_caption("DokBak Game") # 게임 이름
 clock = pygame.time.Clock()
 
 # 배경 이미지 불러오기
-background = pygame.image.load("/Users/jonmingi/Desktop/PythonGame-1/pygame_basic/background.png") # 절대 경로
+background = pygame.image.load("pygame_basic/background.png") # 절대 경로
 
 # 캐릭터(스프라이트) 불러오기
-character = pygame.image.load("/Users/jonmingi/Desktop/PythonGame-1/pygame_basic/character.png") # 절대 경로
+character = pygame.image.load("pygame_basic/character.png") # 절대 경로
 character_size = character.get_rect().size # 이미지의 크기(사이즈)를 구해옴
 character_width = character_size[0] # 캐릭터의 가로 크기
 character_height = character_size[1] # 캐릭터의 세로 크기

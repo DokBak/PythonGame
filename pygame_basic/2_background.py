@@ -11,7 +11,7 @@ screen = pygame.display.set_mode((screen_width, screen_hight)) # 화면 설정
 pygame.display.set_caption("DokBak Game") # 게임 이름
 
 # 배경 이미지 불러오기
-background = pygame.image.load("/Users/jonmingi/Desktop/PythonGame-1/pygame_basic/background.png") # 절대 경로
+background = pygame.image.load("pygame_basic/background.png") # 절대 경로
 # background = pygame.image.load("pygame_basic/background.png") # 상대 경로
 # 이벤트 루프 
 running = True # 게임이 진행중인가?
