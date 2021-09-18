@@ -24,6 +24,24 @@ Python  Game Development
             rect변수의 colliderect함수를 활용 
             변수_rect.colliderect(충돌할 대상)
             결과는 bool 형태이므로 if으로 사용하며 충돌시 작업내용을 작성해준다.
+    텍스트(7_text.py)
+        1. 폰트정의
+            폰트를 지정하지 않을때는 None으로 작성하면 디폴트 폰트로 적용된다.
+            pygame.font.Font(폰트,크기)
+        2. 시간 정보 취득
+            시간정보 중 시작 tick 정보를 받는다.
+            시간정보의 단위는 ms로 받아진다.
+            pygame.time.get_ticks() 
+        3. 게임 내 시간 계산
+            게임 시작시 start_ticks으로 먼저 취득 한 상태에서, 새로운 경과시간 게임 변수를 만들어 다시 시간 정보를 취득해 시작 시간정보를 빼준 뒤, 1000으로 나누어 단위를 ms에서 s로 변경한다.
+        4. 텍스트표시
+            1.에서 정의한 폰트변수의 함수를 사용한다.
+            game_font.render(출력할 글자, True, 글자색상)
+            다른 것들과 마찬가지로 screen.blit(변수, 위치)함수를 이용해 게임내 화면에 그려준다.
+        5. 게임내 딜레이주기
+            pygame.time.delay(ms)
+            ms단위의 시간을 작성해주면 해당시간동안 딜레이를 줄 수 있다.
+            2000 = 2초
 2021년 9월 16일
     FPS(5_frame_per_second.py)
         1. FPS를 설정하기 위해서는 clock변수를 선언해야 한다.
