@@ -8,7 +8,22 @@ Python  Game Development
     4. pygame : 21.2.4
 
 공부 자료 출처 : 유투브 "나도코딩" nadocoding.tistory.com
-
+2021년 9월 18일 
+    충돌(6_collision.py)
+        1. 3_main_sprite.py에서 작성하였던 캐릭터와 마찬가지로 충돌할 대상즉 적 캐릭터를 생성해 준다.
+            1) 이미지 로드
+                pygame.imae.load()
+            2) 사이즈
+                1)에서의변수.get_rect().size 
+            3) 현재 위치 계산
+        2. 충돌 처리를 위한 rect정보 업데이트)
+            변수_rect = 변수.get_rect()
+            변수_rect.left = 변수_x_pos
+            변수_rect.top = 변수_y_pos
+        3. 충돌 처리
+            rect변수의 colliderect함수를 활용 
+            변수_rect.colliderect(충돌할 대상)
+            결과는 bool 형태이므로 if으로 사용하며 충돌시 작업내용을 작성해준다.
 2021년 9월 16일
     FPS(5_frame_per_second.py)
         1. FPS를 설정하기 위해서는 clock변수를 선언해야 한다.
