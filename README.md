@@ -8,6 +8,13 @@ Python  Game Development
     4. pygame : 21.2.4
 
 공부 자료 출처 : 유투브 "나도코딩" nadocoding.tistory.com
+
+pygame_basic폴더의 파일의 소스를 순차적으로 확인해보면 어떤식으로 게임을 개발하여야 하는지 도움될 수 있다.
+2021년 9월 19일
+    게임 개발 기본 프레임(8_game_frame.py)
+        게임개발시 기본 구성만 남겨두었다. 앞으로 게임 개발을 할 경우  8_game_frame.py를 기본 폼으로써 사용하자.
+    똥 피하기 게임(quiz.py)
+        
 2021년 9월 18일 
     충돌(6_collision.py)
         1. 3_main_sprite.py에서 작성하였던 캐릭터와 마찬가지로 충돌할 대상즉 적 캐릭터를 생성해 준다.
@@ -42,6 +49,7 @@ Python  Game Development
             pygame.time.delay(ms)
             ms단위의 시간을 작성해주면 해당시간동안 딜레이를 줄 수 있다.
             2000 = 2초
+
 2021년 9월 16일
     FPS(5_frame_per_second.py)
         1. FPS를 설정하기 위해서는 clock변수를 선언해야 한다.
