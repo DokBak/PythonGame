@@ -11,6 +11,63 @@ Python  Game Development
 
 pygame_basic폴더의 파일의 소스를 순차적으로 확인해보면 어떤식으로 게임을 개발하여야 하는지 도움될 수 있다.
 
+2021년 9월 20일
+    팡 게임 만들기_공 움직임(3_ball_movement.py)
+        1. 공 만들기
+            공은 크기에 따라 따로 처리할 예정, 각각의 크기에 맞는 이미지를 로드할때 리스트로 관리한다.
+                ball_images = [pygame.image.load(os.path.join(image_path,"파일명")),...]
+
+        2. 공의 크기에 따른 최초 속도
+            공 크기에 따라 각각의 공이 튀어 오를때의 최초듸 속도를 지정, 공이 지면(경계면)에 닿았을 때의 속도를 의미한다.
+                balls_speed_y = [-18, -15, -12, -9]            
+        3. 공 관리
+            무기와 마찬가지로 큰공에서 작은공으로 갈때는 2개씩 늘어나며, 공의 종류 또한 4종류나 되기에 리스트로 관리한다.
+                balls = []
+        4. 최초 발생하는 큰공의 정보 추가
+            공 하나를 정의 하기 위해서는 다양한 정보를 정의해주어야 하므로 사전형으로 정의를 하도록한다.
+            balls.append({
+                "pos_x" : 공의 x 좌표 
+                "pos_y" : 공의 y 좌표
+                "img_idx" : # 공의 이미지 인덱스
+                "to_x" : x축 이동 방향, -방향이면 왼쪽으로, +방향이면 오른쪽으로 이동
+                "to_y" : y축 이동 방향, -방향이면 위로, +방향이면 아래로 이동
+                "init_spd_y" : ball_speed_y[i]   # 2.에서 말하는 최초 속도 (y 최초 속도)
+            })
+        5. 리스트의 인덱스, 값을 출력하는 enumerate 연습 예제 
+            practice_enumerate.py에서 연습예를 확인한다.
+        6. 공의 위치를 정의
+            4.에서 정의한 pos_x, pos_y, pos_img_idx를 그대로 각각의 balls의 변수에 넣는다.
+                ball_pos_x = ball_val["pos_x"]
+                ball_pos_y = ball_val["pos_y"]
+                ball_img_idx = ball_val["img_idx"]
+            그 다음부터는 캐릭터와 비슷하게 ball의 크기를 취득 
+            ball_size = ball_images[ball_img_idx].get_rect().size
+        7. x축 이동 설정 : 세로 벽에 닿았을 때 공 이동 위치 변경
+            캐릭터의 경계벽 처리와 비슷하게 처리, 다만 벽에 부딛히면 방향이 만대로 튕기는 효과를 주어야 한다.
+                if ball_pos_x <= 0 or ball_pos_x > screen_width - ball_width:
+                    ball_val["to_x"] = ball_val["to_x"] * -1
+        8. y축 이동 설정 
+            y축에서의 이동은 스테이지(stage)에 닿았을 때와 그 이외의 동작 모두로 2패턴으로 나뉜다.
+                a. 튕겨져 올라갈 때(스테이지에 닿았을 때)
+                    if ball_pos_y >= screen_height - statge_height - ball_height:
+                        ball_val["to_y"] = ball_val["init_spd_y"]
+                b. 그 이외 의 경우
+                    else: 
+                        ball_val["to_y"] += 0.5
+        9. 볼의 좌표를 갱신 
+            ball_val["pos_x"] += ball_val["to_x"]
+            ball_val["pos_y"] += ball_val["to_y"]
+        10. 화면에 그리기
+            화면에 그릴때도 5.의 enumerate함수를 이용하여 작성 
+                for idx, val in enumerate(balls):
+                    ball_pos_x = val["pos_x"]
+                    ball_pos_y = val["pos_y"]
+                    ball_img_idx = val["img_idx"]
+                    screen.blit(ball_images[ball_img_idx], (ball_pos_x,ball_pos_y))
+    리스트 항목 추출함수(practice_enumerate.py)
+        리스트의 인덱스와 값을 추출한다. 리스트_idx에 인덱스 값, 리스트_val에 데이터 값을 추출
+            for 리스트_idx, 리스트_val in enumerate(리스트):
+
 2021년 9월 19일
     게임 개발 기본 프레임(8_game_frame.py)
         게임개발시 기본 구성만 남겨두었다. 앞으로 게임 개발을 할 경우  8_game_frame.py를 기본 폼으로써 사용하자.
