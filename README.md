@@ -11,12 +11,42 @@ Python  Game Development
 
 pygame_basic폴더의 파일의 소스를 순차적으로 확인해보면 어떤식으로 게임을 개발하여야 하는지 도움될 수 있다.
 
+2021년 9월 21일 
+    팡 게임 만들기_게임 종료(6_gameover.py)
+        1. 캐릭터가 공과 닿을때 게임 종료 메시지 발생 
+            기본 종료 메시지를 설정한다.
+                game_result = "Game Over"
+            게임 종료시 메시지 출력, 이벤트가 진행 while 문 밖에 작성.
+            메시지를 화면 중앙에 출력하며, 메시지를 화면에 그리고 그 내용을 새롭게 업데이트 해주어야한다.
+                msg = game_font.render(game_result, True,(255,255,0)) #노란색
+                msg_rect = msg.get_rect(center = (int(screen_width / 2), int(screen_height / 2)))
+                screen.blit(msg,msg_rect)
+                pygame.display.update()
+            메시지 확인을 위해 게임종료 메시지후 2초 대기하도록한다.
+                pygame.time.delay(2000)
+        2. 시간초과의 경우 게임 종료 메시지 발생
+            제한시간 설정 및 시작시간 취득
+                game_font = pygame.font.Font(None, 40)
+                total_time = 100
+                start_ticks = pygame.time.get_ticks()
+            경계시간은 새롭게 시간을 취득해서 시작시간을 빼서 계산 
+                elapsed_time = (pygame.time.get_ticks() - start_ticks) / 1000  # ms -> s
+                timer = game_font.render("Time : {}".format(int(total_time - elapsed_time)), True, (255,255,255))
+                screen.blit(timer, (10,10))
+            제한시간이 끝날대 메시지 게임 오버 출력
+                if total_time - elapsed_time <= 0:
+                    game_result = "Time Over"
+                    running = False
+        3. 공이 전부다 사라질경우 성공 메시지 발생
+            balls의 리스트에 아무것도 없을 경우 발생
+            if len(balls) == 0:
+                game_result = "Mission Complete"
+                running = False
 2021년 9월 20일
     팡 게임 만들기_공 움직임(3_ball_movement.py)
         1. 공 만들기
             공은 크기에 따라 따로 처리할 예정, 각각의 크기에 맞는 이미지를 로드할때 리스트로 관리한다.
-                ball_images = [pygame.image.load(os.path.join(image_path,"파일명")),...]
-
+                ball_images = [pygame.image.load(os.path.join(image_path,"파일명")),]
         2. 공의 크기에 따른 최초 속도
             공 크기에 따라 각각의 공이 튀어 오를때의 최초듸 속도를 지정, 공이 지면(경계면)에 닿았을 때의 속도를 의미한다.
                 balls_speed_y = [-18, -15, -12, -9]            
