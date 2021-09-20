@@ -67,6 +67,49 @@ pygame_basic폴더의 파일의 소스를 순차적으로 확인해보면 어떤
     리스트 항목 추출함수(practice_enumerate.py)
         리스트의 인덱스와 값을 추출한다. 리스트_idx에 인덱스 값, 리스트_val에 데이터 값을 추출
             for 리스트_idx, 리스트_val in enumerate(리스트):
+    충돌(4_collision.py)
+        1. 캐릭터가 공에 닿았을 경우에는 이전 basic에서 진행하였듯이 진행
+            캐릭터의 rect 정보를 취득 및 갱신
+                character_rect = character.get_rect()
+                character_rect.left = character_x_pos
+                character_rect.top = character_y_pos
+            공의 rect 정보를 취득 및 갱신 각각의 공에 대해서 취득해야 함으로 for문 사용 
+                for ball_idx, ball_val in enumerate(balls):
+                    ball_pos_x = ball_val["pos_x"]
+                    ball_pos_y = ball_val["pos_y"]
+                    ball_img_idx = ball_val["img_idx"]
+                    ball_rect = ball_images[ball_img_idx].get_rect()
+                    ball_rect.left = ball_pos_x
+                    ball_rect.top = ball_pos_y
+            공과 캐릭터의 충돌처리(colliderect())
+                if character_rect.colliderect(ball_rect):
+                    running = False
+                    break
+        2. 공들과 무기들의 충돌 처리
+            무기들도 리스트로 관리하고 있으므로 공과 동일하게 rect정보를 취득후 충돌처리(colliderect())
+                for weapon_idx, weapon_val in enumerate(weapons):
+                    weapon_pos_x = weapon_val[0]
+                    weapon_pos_y = weapon_val[1]
+                    
+                    weapon_rect = weapon.get_rect()
+                    weapon_rect.left = weapon_pos_x
+                    weapon_rect.top = weapon_pos_y
+            공들과 무기의 충돌처리(coliderect())
+                if weapon_rect.colliderect(ball_rect):
+                    weapon_to_remove = weapon_idx # 해당 무기 없애기 위한 값 설정
+                    ball_to_remove = ball_idx # 해당 공 없애기 위한 값 설정
+                    break
+        3. 무기와 공의 충돌시 해당 항목 지우기
+            충돌한 공과 무기를 없애기 위한 변수 설정
+                weapon_to_remove = -1
+                ball_to_remove = -1
+            충돌한 공과 무기 없애는 처리
+                if ball_to_remove > -1:
+                    del balls[ball_to_remove]
+                    ball_to_remove = -1
+                if weapon_to_remove > -1:
+                    del weapons[weapon_to_remove]
+                    weapon_to_remove = -1
 
 2021년 9월 19일
     게임 개발 기본 프레임(8_game_frame.py)
