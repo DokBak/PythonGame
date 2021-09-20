@@ -42,6 +42,21 @@ pygame_basic폴더의 파일의 소스를 순차적으로 확인해보면 어떤
             if len(balls) == 0:
                 game_result = "Mission Complete"
                 running = False
+    팡 게임 만들기_게임 버그수정(7_bug.py)
+        이중 for문을 동시에 종료하는 내용에 대하여 알아보고 적용하였다.
+        세부 내용은 pracitce_bugtest.py에서 확인가능하다.
+    이중for문 연습(practice_bugtest.py)
+        이중 for문 구조
+            for 바깥조건:
+                바깥동작
+            for 안쪽조건 :
+                안쪽동작
+                if 충돌하면:
+                    break
+            else:
+                continue
+            break
+            
 2021년 9월 20일
     팡 게임 만들기_공 움직임(3_ball_movement.py)
         1. 공 만들기
