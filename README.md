@@ -110,6 +110,38 @@ pygame_basic폴더의 파일의 소스를 순차적으로 확인해보면 어떤
                 if weapon_to_remove > -1:
                     del weapons[weapon_to_remove]
                     weapon_to_remove = -1
+    공 쪼개기(5_ball_division.py)
+        무기와 공이 부딫혔을때 의 if문에서 추가작업
+            가장 작은 공이 아니라면 공을 두 개 추가하며 서로 반대 방향으로 나오도록 진행
+                if ball_img_idx < 3:
+                    # 현재 공 크기 정보를 가지고 옴
+                    ball_width = ball_rect.size[0]
+                    ball_height = ball_rect.size[1]
+
+                    # 나눠진 공 정보 
+                    small_ball_rect = ball_images[ball_img_idx + 1].get_rect()
+                    small_ball_width = small_ball_rect.size[0]
+                    small_ball_height = small_ball_rect.size[1]
+
+                    # 왼쪽으로 튕겨나가는 작은 공
+                    balls.append({
+                        "pos_x" : ball_pos_x + (ball_width / 2) - (small_ball_width / 2), # 공의 x 좌표
+                        "pos_y" : ball_pos_y + (ball_height / 2) - (small_ball_height / 2), # 공의 y 좌표
+                        "img_idx" :  ball_img_idx + 1, # 공의 이미지 인덱스
+                        "to_x" : -3,  # x축 이동 방향, -3이면 왼쪽, 3이면 오른쪽으로 
+                        "to_y" : -6, # y축 이동 방향,
+                        "init_spd_y" : ball_speed_y[ball_img_idx + 1]# y 최초 속도
+                    })
+                    # 오른쪽으로 튕겨나가는 작은 공
+                    balls.append({
+                        "pos_x" : ball_pos_x + (ball_width / 2) - (small_ball_width / 2), # 공의 x 좌표
+                        "pos_y" : ball_pos_y + (ball_height / 2) - (small_ball_height / 2), # 공의 y 좌표
+                        "img_idx" :  ball_img_idx + 1, # 공의 이미지 인덱스
+                        "to_x" : 3,  # x축 이동 방향, -3이면 왼쪽, 3이면 오른쪽으로 
+                        "to_y" : -6, # y축 이동 방향,
+                        "init_spd_y" : ball_speed_y[ball_img_idx + 1]# y 최초 속도
+                    })
+
 
 2021년 9월 19일
     게임 개발 기본 프레임(8_game_frame.py)
