@@ -221,7 +221,7 @@ while running:
                         "img_idx" :  ball_img_idx + 1, # 공의 이미지 인덱스
                         "to_x" : 3,  # x축 이동 방향, -3이면 왼쪽, 3이면 오른쪽으로 
                         "to_y" : -6, # y축 이동 방향,
-                        "init_spd_y" : ball_speed_y[ball_img_idx + 1]# y 최초 속도
+                        "init_spd_y" : ball_speed_y[ball_img_idx + 1]# y 최초 속도 
                     })
                 break
 

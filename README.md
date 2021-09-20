@@ -142,7 +142,6 @@ pygame_basic폴더의 파일의 소스를 순차적으로 확인해보면 어떤
                         "init_spd_y" : ball_speed_y[ball_img_idx + 1]# y 최초 속도
                     })
 
-
 2021년 9월 19일
     게임 개발 기본 프레임(8_game_frame.py)
         게임개발시 기본 구성만 남겨두었다. 앞으로 게임 개발을 할 경우  8_game_frame.py를 기본 폼으로써 사용하자.
