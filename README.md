@@ -1,61 +1,160 @@
 # PythonGame
-Python  Game Development
 
-작업 환경 
-    1. OS : macOS Big Sur 11.5.2 
-    2. 언어 : Python 3.9.7 
-    3. IDE(편집기) : VS CODE
-    4. pygame : 21.2.4
 
-공부 자료 출처 : 유투브 "나도코딩" nadocoding.tistory.com
+## **Development Environment**
+### 1. OS : macOS Big Sur 11.5.2 
+### 2. Language : Python 3.9.7 
+### 3. IDE : VS CODE
+### 4. pygame : 21.2.4
 
-pygame_basic폴더의 파일의 소스를 순차적으로 확인해보면 어떤식으로 게임을 개발하여야 하는지 도움될 수 있다.
+## Study reference : youtube="nadocoding", blog=nadocoding.tistory.com
 
-2021년 9월 21일 
-    팡 게임 만들기_게임 종료(6_gameover.py)
-        1. 캐릭터가 공과 닿을때 게임 종료 메시지 발생 
-            기본 종료 메시지를 설정한다.
-                game_result = "Game Over"
-            게임 종료시 메시지 출력, 이벤트가 진행 while 문 밖에 작성.
-            메시지를 화면 중앙에 출력하며, 메시지를 화면에 그리고 그 내용을 새롭게 업데이트 해주어야한다.
-                msg = game_font.render(game_result, True,(255,255,0)) #노란색
-                msg_rect = msg.get_rect(center = (int(screen_width / 2), int(screen_height / 2)))
-                screen.blit(msg,msg_rect)
-                pygame.display.update()
-            메시지 확인을 위해 게임종료 메시지후 2초 대기하도록한다.
-                pygame.time.delay(2000)
-        2. 시간초과의 경우 게임 종료 메시지 발생
-            제한시간 설정 및 시작시간 취득
-                game_font = pygame.font.Font(None, 40)
-                total_time = 100
-                start_ticks = pygame.time.get_ticks()
-            경계시간은 새롭게 시간을 취득해서 시작시간을 빼서 계산 
-                elapsed_time = (pygame.time.get_ticks() - start_ticks) / 1000  # ms -> s
-                timer = game_font.render("Time : {}".format(int(total_time - elapsed_time)), True, (255,255,255))
-                screen.blit(timer, (10,10))
-            제한시간이 끝날대 메시지 게임 오버 출력
-                if total_time - elapsed_time <= 0:
-                    game_result = "Time Over"
-                    running = False
-        3. 공이 전부다 사라질경우 성공 메시지 발생
-            balls의 리스트에 아무것도 없을 경우 발생
-            if len(balls) == 0:
-                game_result = "Mission Complete"
-                running = False
-    팡 게임 만들기_게임 버그수정(7_bug.py)
-        이중 for문을 동시에 종료하는 내용에 대하여 알아보고 적용하였다.
-        세부 내용은 pracitce_bugtest.py에서 확인가능하다.
-    이중for문 연습(practice_bugtest.py)
-        이중 for문 구조
-            for 바깥조건:
-                바깥동작
-            for 안쪽조건 :
-                안쪽동작
-                if 충돌하면:
-                    break
-            else:
-                continue
-            break
+## **Work**
+### 2021년 9월 14일
+#### 파이썬 게임 개발 환경 설정
+ 1. pygame패키지를 설치
+ - 공식 사이트에서 파이썬을 설치 한 경우 : pip에서 pygame이 제대로 적용되지 않을 경우도 있다.
+ - homebrew에서 파이썬을 설치 한 경우 : pip3 install pygame으로 설치한다.
+#### 초기 설정(1_create_fram.py)
+  1. 파이썬으로 게임을 작성하기 위한 pygame패키지 추가
+```
+import pygame
+```
+ 2. pygame을 import하고나면 반드시 초기화를 한번 진행해주어야 한다.
+            pygame.init()
+        3. 게임의 화면크기를 조정
+            pygame.display.set_mode((가로크기,세로크기))
+        4. 게임 타이틀 지정
+            pygame.display.set_caption(게임이름)
+        5. pygame사용시 설정
+            설정에서  linting을 검색하고, python > linting : Bandit Enabled 옵션의 체크를 해제 한다. (처음부터 체크 해제인 경우도 있다.)
+        6. 게임은 무엇인가의 이벤트가 있어야 게임이 꺼지지 않는다.(QUIT : 대문자로)
+            for event in pygame.event.get()
+                if event.type == pygmae.QUIT:
+        7. 게임의 맨 마지막에는 pygame 패키지를 닫아주어야 한다
+            pygame.quit()
+            
+
+2021년 9월 15일
+    배경 설정(2_background.py)
+        1. 이미지 읽어오기(절대경로, 상대경로둘다 가능)
+            pygame.image.load(경로)
+        2. 이미지를 열어서 상단 탭 우클릭시 (상대)경로복사 기능이 있다.
+        3. 화면 변수에 blit함수로 배경을 그린다.
+            변수.blit(배경이미지변수, 좌표(0,0))
+        4. 배경을 계속 그려주어야한다.
+            pygame.display.update()
+    캐릭터 설정(3_main_sprite.py)
+        1. 이미지 읽어오기
+            pygame.image.load(경로)
+        2. 이미지 크기(사이즈)읽어오기. rect()이기 때문에 사각형 사이즈를 읽어온다. 배열로 저장되며 0번이 가로 1번이 세로 크기가 저장된다. 
+            이미지변수.get_rect().size
+        3. 배경의 좌표는 (0,0) 에서 시작하지만 캐릭터는 어디에 위치될지 모른다. 예로 초기위치(좌표)를 아래 중앙에 위치하게 설정은 (가로 :  (배경의 가로 / 2) - (캐릭터의 가로 / 2), 세로 : 배경의 세로길이 - 캐릭터의 세로길이)로 계산한다.
+        4. 배경과 동일하게 화면변수에 blit함수로 캐릭터를 그린다.
+    키보드 이벤트 설정(4_keyboard_event.py)
+        1. 게임을 진행할 때 필요한 입력 이벤트를 설정
+        2. 이벤트 타입이 키보드를 누를때(KEYDOWN : 대문자로)
+            event.type == pygame.KEYDOWN
+        3. 이벤트 타입이 키보드에서 손을 뗄때(KEYUP : 대문자로)
+            event.type == pygame.KEYUP
+        4. 어떤 키가 눌렸는지는 아래와 같이 작성(Key이름 : 대문자로)
+            event.key == pygame.K_LEFT
+        5. 이동시 캐릭터의 좌표를 변경해줄 이동좌표를 선언후 이벤트 별로 이동 좌표 값을 조정
+        6. 캐릭터의 좌표를 현재좌표 - 이동좌표로 현재좌표를 갱신한다.
+        7. 화면크기에 맞게 경계값 처리를 한다.
+ 
+ 2021년 9월 16일
+    FPS(5_frame_per_second.py)
+        1. FPS를 설정하기 위해서는 clock변수를 선언해야 한다.
+            clock = pygame.time.Clock()
+        2. 이벤트 루프에 게임화면의 초당 프레임 수를 설정한다.
+            dt = clock.tick(60) # 지금은 : 60프레임
+        3. 1과 2만 추가한상태에서 프레임수를 변경하면 프레임에 따라 캐릭터의 이동속도가 다르게된다. 게임내의 이동속도는 프레임이 얼마가 되었든 일정해야한다.
+        4. 기존 소스의 이동량(5)이 공통된 부분이므로                
+            character_speed로 변수로 사용한다.
+        5. 프레임이 변화하더라도 이동속도가 비슷하기 위해서는 캐릭터 이동을 조정하는 부분에서 프레임 값을 곱해주면된다.
+            character_x_pos += to_x * dt
+        6. 프레임에 관한 부가 설명
+            #캐릭터가 100만큼 이동을 해야함 
+            # 10 fps : 1초 동안에 10번 동작 -> 1번에 몇 만큼 이동? 10만큼! 10 * 10 = 100
+            # 20 fps : 1초 동안에 20번 동작 -> 1번에 5만큼! 5 * 20 = 100
+
+2021년 9월 18일 
+    충돌(6_collision.py)
+        1. 3_main_sprite.py에서 작성하였던 캐릭터와 마찬가지로 충돌할 대상즉 적 캐릭터를 생성해 준다.
+            1) 이미지 로드
+                pygame.imae.load()
+            2) 사이즈
+                1)에서의변수.get_rect().size 
+            3) 현재 위치 계산
+        2. 충돌 처리를 위한 rect정보 업데이트)
+            변수_rect = 변수.get_rect()
+            변수_rect.left = 변수_x_pos
+            변수_rect.top = 변수_y_pos
+        3. 충돌 처리
+            rect변수의 colliderect함수를 활용 
+            변수_rect.colliderect(충돌할 대상)
+            결과는 bool 형태이므로 if으로 사용하며 충돌시 작업내용을 작성해준다.
+    텍스트(7_text.py)
+        1. 폰트정의
+            폰트를 지정하지 않을때는 None으로 작성하면 디폴트 폰트로 적용된다.
+            pygame.font.Font(폰트,크기)
+        2. 시간 정보 취득
+            시간정보 중 시작 tick 정보를 받는다.
+            시간정보의 단위는 ms로 받아진다.
+            pygame.time.get_ticks() 
+        3. 게임 내 시간 계산
+            게임 시작시 start_ticks으로 먼저 취득 한 상태에서, 새로운 경과시간 게임 변수를 만들어 다시 시간 정보를 취득해 시작 시간정보를 빼준 뒤, 1000으로 나누어 단위를 ms에서 s로 변경한다.
+        4. 텍스트표시
+            1.에서 정의한 폰트변수의 함수를 사용한다.
+            game_font.render(출력할 글자, True, 글자색상)
+            다른 것들과 마찬가지로 screen.blit(변수, 위치)함수를 이용해 게임내 화면에 그려준다.
+        5. 게임내 딜레이주기
+            pygame.time.delay(ms)
+            ms단위의 시간을 작성해주면 해당시간동안 딜레이를 줄 수 있다.
+            2000 = 2초
+
+2021년 9월 19일
+    게임 개발 기본 프레임(8_game_frame.py)
+        게임개발시 기본 구성만 남겨두었다. 앞으로 게임 개발을 할 경우  8_game_frame.py를 기본 폼으로써 사용하자.
+    똥 피하기 게임_직접 코딩(quiz.py)
+        1. 캐릭터는 화면 가장 아래에 위치, 좌우로만 이동 가능
+        2. 똥은 화면 가장 위에서 떨어짐. x 좌표는 매번 랜덤으로 설정
+        3. 캐릭터가 똥을 피하면 다음 똥이 다시 떨어짐 
+        4. 캐릭터가 똥과 충돌하면 게임 종료
+        5. FPS는 30으로 고정 
+    똥 피하기 게임_코드 첨삭(quiz_answer.py)
+        1. random 함수임포트 
+            재 확인 내용 : from random import * 로 추가하면 randint()형식으로 [random.]은  생략가능한데 import random으로 추가하게되면 임포트 하는 패키지까지 포함해서 작성해주어야 한다. random.randint()로...
+        2. 거의 정답
+    팡 게임 만들기_배경,스테이지,캐릭터(1_frame_background_stage_character.py)
+        1. 게임 이미지 생성
+            배경, 스테이지, 캐릭터, 무기, 공1~4
+        2. 전체경로가 아닌 지정 폴더, 파일을 지정하기
+            os패키지 기능을 사용하기 위해 추가
+                import os
+            현재 파일의 위치를 반환
+                current_path = os.path.dirname(__file__)
+            현재 파일 경로에서 다른 파일/폴더를 지정해서  load()에 넣기
+                os.path.join(current_path,"폴더/파일명")
+        3. 배경설정, 스테이지설정, 캐릭터설정
+            게임개발 기본 프레임에서 배경, 스테이지, 캐릭터그리기 까지 완료 
+    팡 게임 만들기_무기, 이벤트(2_weapon_keyevent.py)
+        1. 무기 객체 생성
+            캐릭터 객체, 적 객체와 마찬가지로 load를 이용해서 생성, 무기의 이동 속도도 선언
+        2. 무기의 경우 여러발을 발사할 수 있기 때문에 리스트로 선언
+            weapons = []
+        3. 무기를 발사 했을 때 무기가 발사가 되어야 하므로 key이벤트에서 무기의 위치를 지정해 준다. 무기는 캐릭터의 위치[character_x_pos]에서 캐릭터의 절반[character_width]크기만큼 더한값에 무기 이미지의 절반[weapon_width]을 빼주어 무기의 x좌표를 계산한다.
+            또한 무기 발사시마다 리스트에 넣어주어야 한다.
+            weapons.append([무기x좌표, 무기y좌표])
+        4. 무기의 위치를 조정
+            무기는 리스트로 저장햇는데 x좌표는 고정이면서, y좌표만 변한다. 이것을 기존 weapons에 다시 넣는 작업을 한 줄 for문을 이용해서 작성하면 다음과 같다. y좌표인 w[1]만 무기의 이동속도만큼 빼주는 처리를 해준다.
+                weapons = [ [ w[0], w[1] - weapon_speed] for w in weapons ]
+        5. 무기가 화면 제일 상단에 닿게되었을 때 무기를 안보이게 하려면 4.의 코드에서 조건을 추가한다.
+                weapons = [ [ w[0], w[1] - weapon_speed] for w in weapons if w[1] > 0]
+        6. 무기를 화면에 그리기
+            for문을 이용해서 weapons에서 weapon_x_pos,weapon_y_pos을 하나씩 빼서 화면에 그려준다.
+        7. 화면에 그릴 경우 코딩 순서에 따라 그려지기 때문에 출력 순서를 조절해 주어야 한다. 무기를 캐릭터 아래에 그리도록 작성하면 화면에서는 캐릭터 위로 무기 이미지가 나오게된다.
             
 2021년 9월 20일
     팡 게임 만들기_공 움직임(3_ball_movement.py)
@@ -187,145 +286,49 @@ pygame_basic폴더의 파일의 소스를 순차적으로 확인해보면 어떤
                         "init_spd_y" : ball_speed_y[ball_img_idx + 1]# y 최초 속도
                     })
 
-2021년 9월 19일
-    게임 개발 기본 프레임(8_game_frame.py)
-        게임개발시 기본 구성만 남겨두었다. 앞으로 게임 개발을 할 경우  8_game_frame.py를 기본 폼으로써 사용하자.
-    똥 피하기 게임_직접 코딩(quiz.py)
-        1. 캐릭터는 화면 가장 아래에 위치, 좌우로만 이동 가능
-        2. 똥은 화면 가장 위에서 떨어짐. x 좌표는 매번 랜덤으로 설정
-        3. 캐릭터가 똥을 피하면 다음 똥이 다시 떨어짐 
-        4. 캐릭터가 똥과 충돌하면 게임 종료
-        5. FPS는 30으로 고정 
-    똥 피하기 게임_코드 첨삭(quiz_answer.py)
-        1. random 함수임포트 
-            재 확인 내용 : from random import * 로 추가하면 randint()형식으로 [random.]은  생략가능한데 import random으로 추가하게되면 임포트 하는 패키지까지 포함해서 작성해주어야 한다. random.randint()로...
-        2. 거의 정답
-    팡 게임 만들기_배경,스테이지,캐릭터(1_frame_background_stage_character.py)
-        1. 게임 이미지 생성
-            배경, 스테이지, 캐릭터, 무기, 공1~4
-        2. 전체경로가 아닌 지정 폴더, 파일을 지정하기
-            os패키지 기능을 사용하기 위해 추가
-                import os
-            현재 파일의 위치를 반환
-                current_path = os.path.dirname(__file__)
-            현재 파일 경로에서 다른 파일/폴더를 지정해서  load()에 넣기
-                os.path.join(current_path,"폴더/파일명")
-        3. 배경설정, 스테이지설정, 캐릭터설정
-            게임개발 기본 프레임에서 배경, 스테이지, 캐릭터그리기 까지 완료 
-    팡 게임 만들기_무기, 이벤트(2_weapon_keyevent.py)
-        1. 무기 객체 생성
-            캐릭터 객체, 적 객체와 마찬가지로 load를 이용해서 생성, 무기의 이동 속도도 선언
-        2. 무기의 경우 여러발을 발사할 수 있기 때문에 리스트로 선언
-            weapons = []
-        3. 무기를 발사 했을 때 무기가 발사가 되어야 하므로 key이벤트에서 무기의 위치를 지정해 준다. 무기는 캐릭터의 위치[character_x_pos]에서 캐릭터의 절반[character_width]크기만큼 더한값에 무기 이미지의 절반[weapon_width]을 빼주어 무기의 x좌표를 계산한다.
-            또한 무기 발사시마다 리스트에 넣어주어야 한다.
-            weapons.append([무기x좌표, 무기y좌표])
-        4. 무기의 위치를 조정
-            무기는 리스트로 저장햇는데 x좌표는 고정이면서, y좌표만 변한다. 이것을 기존 weapons에 다시 넣는 작업을 한 줄 for문을 이용해서 작성하면 다음과 같다. y좌표인 w[1]만 무기의 이동속도만큼 빼주는 처리를 해준다.
-                weapons = [ [ w[0], w[1] - weapon_speed] for w in weapons ]
-        5. 무기가 화면 제일 상단에 닿게되었을 때 무기를 안보이게 하려면 4.의 코드에서 조건을 추가한다.
-                weapons = [ [ w[0], w[1] - weapon_speed] for w in weapons if w[1] > 0]
-        6. 무기를 화면에 그리기
-            for문을 이용해서 weapons에서 weapon_x_pos,weapon_y_pos을 하나씩 빼서 화면에 그려준다.
-        7. 화면에 그릴 경우 코딩 순서에 따라 그려지기 때문에 출력 순서를 조절해 주어야 한다. 무기를 캐릭터 아래에 그리도록 작성하면 화면에서는 캐릭터 위로 무기 이미지가 나오게된다.
 
-2021년 9월 18일 
-    충돌(6_collision.py)
-        1. 3_main_sprite.py에서 작성하였던 캐릭터와 마찬가지로 충돌할 대상즉 적 캐릭터를 생성해 준다.
-            1) 이미지 로드
-                pygame.imae.load()
-            2) 사이즈
-                1)에서의변수.get_rect().size 
-            3) 현재 위치 계산
-        2. 충돌 처리를 위한 rect정보 업데이트)
-            변수_rect = 변수.get_rect()
-            변수_rect.left = 변수_x_pos
-            변수_rect.top = 변수_y_pos
-        3. 충돌 처리
-            rect변수의 colliderect함수를 활용 
-            변수_rect.colliderect(충돌할 대상)
-            결과는 bool 형태이므로 if으로 사용하며 충돌시 작업내용을 작성해준다.
-    텍스트(7_text.py)
-        1. 폰트정의
-            폰트를 지정하지 않을때는 None으로 작성하면 디폴트 폰트로 적용된다.
-            pygame.font.Font(폰트,크기)
-        2. 시간 정보 취득
-            시간정보 중 시작 tick 정보를 받는다.
-            시간정보의 단위는 ms로 받아진다.
-            pygame.time.get_ticks() 
-        3. 게임 내 시간 계산
-            게임 시작시 start_ticks으로 먼저 취득 한 상태에서, 새로운 경과시간 게임 변수를 만들어 다시 시간 정보를 취득해 시작 시간정보를 빼준 뒤, 1000으로 나누어 단위를 ms에서 s로 변경한다.
-        4. 텍스트표시
-            1.에서 정의한 폰트변수의 함수를 사용한다.
-            game_font.render(출력할 글자, True, 글자색상)
-            다른 것들과 마찬가지로 screen.blit(변수, 위치)함수를 이용해 게임내 화면에 그려준다.
-        5. 게임내 딜레이주기
-            pygame.time.delay(ms)
-            ms단위의 시간을 작성해주면 해당시간동안 딜레이를 줄 수 있다.
-            2000 = 2초
-
-2021년 9월 16일
-    FPS(5_frame_per_second.py)
-        1. FPS를 설정하기 위해서는 clock변수를 선언해야 한다.
-            clock = pygame.time.Clock()
-        2. 이벤트 루프에 게임화면의 초당 프레임 수를 설정한다.
-            dt = clock.tick(60) # 지금은 : 60프레임
-        3. 1과 2만 추가한상태에서 프레임수를 변경하면 프레임에 따라 캐릭터의 이동속도가 다르게된다. 게임내의 이동속도는 프레임이 얼마가 되었든 일정해야한다.
-        4. 기존 소스의 이동량(5)이 공통된 부분이므로                
-            character_speed로 변수로 사용한다.
-        5. 프레임이 변화하더라도 이동속도가 비슷하기 위해서는 캐릭터 이동을 조정하는 부분에서 프레임 값을 곱해주면된다.
-            character_x_pos += to_x * dt
-        6. 프레임에 관한 부가 설명
-            #캐릭터가 100만큼 이동을 해야함 
-            # 10 fps : 1초 동안에 10번 동작 -> 1번에 몇 만큼 이동? 10만큼! 10 * 10 = 100
-            # 20 fps : 1초 동안에 20번 동작 -> 1번에 5만큼! 5 * 20 = 100
-
-2021년 9월 15일
-    배경 설정(2_background.py)
-        1. 이미지 읽어오기(절대경로, 상대경로둘다 가능)
-            pygame.image.load(경로)
-        2. 이미지를 열어서 상단 탭 우클릭시 (상대)경로복사 기능이 있다.
-        3. 화면 변수에 blit함수로 배경을 그린다.
-            변수.blit(배경이미지변수, 좌표(0,0))
-        4. 배경을 계속 그려주어야한다.
-            pygame.display.update()
-    캐릭터 설정(3_main_sprite.py)
-        1. 이미지 읽어오기
-            pygame.image.load(경로)
-        2. 이미지 크기(사이즈)읽어오기. rect()이기 때문에 사각형 사이즈를 읽어온다. 배열로 저장되며 0번이 가로 1번이 세로 크기가 저장된다. 
-            이미지변수.get_rect().size
-        3. 배경의 좌표는 (0,0) 에서 시작하지만 캐릭터는 어디에 위치될지 모른다. 예로 초기위치(좌표)를 아래 중앙에 위치하게 설정은 (가로 :  (배경의 가로 / 2) - (캐릭터의 가로 / 2), 세로 : 배경의 세로길이 - 캐릭터의 세로길이)로 계산한다.
-        4. 배경과 동일하게 화면변수에 blit함수로 캐릭터를 그린다.
-    키보드 이벤트 설정(4_keyboard_event.py)
-        1. 게임을 진행할 때 필요한 입력 이벤트를 설정
-        2. 이벤트 타입이 키보드를 누를때(KEYDOWN : 대문자로)
-            event.type == pygame.KEYDOWN
-        3. 이벤트 타입이 키보드에서 손을 뗄때(KEYUP : 대문자로)
-            event.type == pygame.KEYUP
-        4. 어떤 키가 눌렸는지는 아래와 같이 작성(Key이름 : 대문자로)
-            event.key == pygame.K_LEFT
-        5. 이동시 캐릭터의 좌표를 변경해줄 이동좌표를 선언후 이벤트 별로 이동 좌표 값을 조정
-        6. 캐릭터의 좌표를 현재좌표 - 이동좌표로 현재좌표를 갱신한다.
-        7. 화면크기에 맞게 경계값 처리를 한다.
-
-2021년 9월 14일
-    파이썬 게임 개발 환경 설정
-        1. pygame패키지를 설치
-            - 공식 사이트에서 파이썬을 설치 한 경우 : pip에서 pygame이 제대로 적용되지 않을 경우도 있다.
-            - homebrew에서 파이썬을 설치 한 경우 : pip3 install pygame으로 설치한다.
-    초기 설정(1_create_fram.py)
-        1. 파이썬으로 게임을 작성하기 위한 pygame패키지 추가
-            import pygame
-        2. pygame을 import하고나면 반드시 초기화를 한번 진행해주어야 한다.
-            pygame.init()
-        3. 게임의 화면크기를 조정
-            pygame.display.set_mode((가로크기,세로크기))
-        4. 게임 타이틀 지정
-            pygame.display.set_caption(게임이름)
-        5. pygame사용시 설정
-            설정에서  linting을 검색하고, python > linting : Bandit Enabled 옵션의 체크를 해제 한다. (처음부터 체크 해제인 경우도 있다.)
-        6. 게임은 무엇인가의 이벤트가 있어야 게임이 꺼지지 않는다.(QUIT : 대문자로)
-            for event in pygame.event.get()
-                if event.type == pygmae.QUIT:
-        7. 게임의 맨 마지막에는 pygame 패키지를 닫아주어야 한다
-            pygame.quit()
+2021년 9월 21일 
+    팡 게임 만들기_게임 종료(6_gameover.py)
+        1. 캐릭터가 공과 닿을때 게임 종료 메시지 발생 
+            기본 종료 메시지를 설정한다.
+                game_result = "Game Over"
+            게임 종료시 메시지 출력, 이벤트가 진행 while 문 밖에 작성.
+            메시지를 화면 중앙에 출력하며, 메시지를 화면에 그리고 그 내용을 새롭게 업데이트 해주어야한다.
+                msg = game_font.render(game_result, True,(255,255,0)) #노란색
+                msg_rect = msg.get_rect(center = (int(screen_width / 2), int(screen_height / 2)))
+                screen.blit(msg,msg_rect)
+                pygame.display.update()
+            메시지 확인을 위해 게임종료 메시지후 2초 대기하도록한다.
+                pygame.time.delay(2000)
+        2. 시간초과의 경우 게임 종료 메시지 발생
+            제한시간 설정 및 시작시간 취득
+                game_font = pygame.font.Font(None, 40)
+                total_time = 100
+                start_ticks = pygame.time.get_ticks()
+            경계시간은 새롭게 시간을 취득해서 시작시간을 빼서 계산 
+                elapsed_time = (pygame.time.get_ticks() - start_ticks) / 1000  # ms -> s
+                timer = game_font.render("Time : {}".format(int(total_time - elapsed_time)), True, (255,255,255))
+                screen.blit(timer, (10,10))
+            제한시간이 끝날대 메시지 게임 오버 출력
+                if total_time - elapsed_time <= 0:
+                    game_result = "Time Over"
+                    running = False
+        3. 공이 전부다 사라질경우 성공 메시지 발생
+            balls의 리스트에 아무것도 없을 경우 발생
+            if len(balls) == 0:
+                game_result = "Mission Complete"
+                running = False
+    팡 게임 만들기_게임 버그수정(7_bug.py)
+        이중 for문을 동시에 종료하는 내용에 대하여 알아보고 적용하였다.
+        세부 내용은 pracitce_bugtest.py에서 확인가능하다.
+    이중for문 연습(practice_bugtest.py)
+        이중 for문 구조
+            for 바깥조건:
+                바깥동작
+            for 안쪽조건 :
+                안쪽동작
+                if 충돌하면:
+                    break
+            else:
+                continue
+            break
