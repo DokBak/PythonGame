@@ -21,7 +21,7 @@
 import pygame
 ```
  2. pygame을 import하고나면 반드시 초기화를 한번 진행해주어야 한다.
-            pygame.init()
+```pygame.init()```
         3. 게임의 화면크기를 조정
             pygame.display.set_mode((가로크기,세로크기))
         4. 게임 타이틀 지정
