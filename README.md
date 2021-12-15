@@ -21,18 +21,28 @@
 import pygame
 ```
  2. pygame을 import하고나면 반드시 초기화를 한번 진행해주어야 한다.
-```pygame.init()```
-        3. 게임의 화면크기를 조정
-            pygame.display.set_mode((가로크기,세로크기))
-        4. 게임 타이틀 지정
-            pygame.display.set_caption(게임이름)
-        5. pygame사용시 설정
-            설정에서  linting을 검색하고, python > linting : Bandit Enabled 옵션의 체크를 해제 한다. (처음부터 체크 해제인 경우도 있다.)
-        6. 게임은 무엇인가의 이벤트가 있어야 게임이 꺼지지 않는다.(QUIT : 대문자로)
-            for event in pygame.event.get()
-                if event.type == pygmae.QUIT:
-        7. 게임의 맨 마지막에는 pygame 패키지를 닫아주어야 한다
-            pygame.quit()
+```
+pygame.init()
+```
+ 3. 게임의 화면크기를 조정
+```
+pygame.display.set_mode((가로크기,세로크기))
+```
+ 4. 게임 타이틀 지정
+```
+pygame.display.set_caption(게임이름)
+```
+ 5. pygame사용시 설정
+ - 설정에서  ```linting```을 검색하고, ```python > linting : Bandit Enabled``` 옵션의 체크를 해제 한다. (처음부터 체크 해제인 경우도 있다.)
+ 6. 게임은 무엇인가의 이벤트가 있어야 게임이 꺼지지 않는다.(QUIT : 대문자로)
+```
+for event in pygame.event.get()
+ if event.type == pygmae.QUIT:
+```
+ 7. 게임의 맨 마지막에는 pygame 패키지를 닫아주어야 한다
+```
+pygame.quit()
+```
             
 
 2021년 9월 15일
